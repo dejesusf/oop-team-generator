@@ -6,9 +6,6 @@ const Intern= require('./Develop/lib/Intern');
 const Manager= require('./Develop/lib/Manager');
 const generateHtml= require('./Develop/util/generateHtml');
 const fs= require('fs');
-const { ADDRGETNETWORKPARAMS } = require('dns');
-const { nextTick } = require('process');
-const { start } = require('repl');
 
 //empty string to store team members
 const team= [];
@@ -38,9 +35,8 @@ const createEng = () => {
     },
   ]).then((response) => {
     const newEngineer= new Engineer(response.name, response.id, response.email, response.github);
-    createCard(newEngineer, 'Engineer');
     team.push(newEngineer);
-    next();
+    start();
   })
 }
 
@@ -69,9 +65,8 @@ const createIntern = () => {
     },
   ]).then((response) => {
     const newIntern= new Intern(response.name, response.id, response.email, response.school);
-    createCard(newIntern, 'Intern');
     team.push(newIntern);
-    next();
+    start();
   })
 }
 
@@ -100,20 +95,20 @@ const createManager = () => {
     },
   ]).then((response) => {
     const newManager= new Manager(response.name, response.id, response.email, response.number);
-    createCard(newManager, 'Manager');
     team.push(newManager);
-    next();
+    start();
   })
 }
 
-const next= () => {
+const start= () => {
   inquirer.prompt([
     {
       type: 'list',
       name: 'next',
       message: 'What do you want to do?',
       choices: ['Add Manager', 'Add Engineer', 'Add Intern', 'Done!'],
-    }.then((response) => {
+    }
+  ]).then((response) => {
       console.log(response.next);
       switch (response.next) {
         case 'Add Manager':
@@ -129,5 +124,14 @@ const next= () => {
           generateWebsite();
       }
     })
-  ])
 }
+
+const generateWebsite= () => {
+  fs.writeFile('./dist/index.html',generateHtml(team), err=> {
+    if (err) {
+      console.log(err)
+    }
+  })
+}
+
+start();
