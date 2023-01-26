@@ -8,10 +8,12 @@ class Manager extends Employee {
         //new variable in addition to inherited ones
         this.officeNumber= officeNumber;
     }
+    //getRole method to show Role
     getRole() {
         console.log('Manager');
         return 'Manager';
     }
+    //getOfficeNumber method to show office number
     getOfficeNumber() {
         console.log(this.officeNumber);
         return this.officeNumber;
