@@ -1,6 +1,5 @@
 //list all required files and packages 
 const inquirer= require('inquirer');
-const Employee= require('./Develop/lib/Employee');
 const Engineer= require('./Develop/lib/Engineer');
 const Intern= require('./Develop/lib/Intern');
 const Manager= require('./Develop/lib/Manager');
@@ -130,6 +129,8 @@ const generateWebsite= () => {
   fs.writeFile('./dist/index.html',generateHtml(team), err=> {
     if (err) {
       console.log(err)
+    } else {
+      console.log('Team Generated!')
     }
   })
 }
